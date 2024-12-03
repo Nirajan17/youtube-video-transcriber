@@ -1,14 +1,19 @@
 from crewai import Agent
 from tools import yt_tool
+from crewai import LLM
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
-import os
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
-os.environ["OPENAI_MODEL_NAME"]="gpt-3.5-turbo"
+# import os
+# os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+# os.environ["OPENAI_MODEL_NAME"]="gpt-3.5-turbo"
 
+llm=LLM(
+        model="ollama/llama3.2",
+        base_url="http://localhost:11434"
+    )
 
 ## Create a senior blog content researcher
 
@@ -21,6 +26,7 @@ blog_researcher=Agent(
        "Expert in understanding videos in AI Data Science , MAchine Learning And GEN AI and providing suggestion" 
     ),
     tools=[yt_tool],
+    llm=llm,
     allow_delegation=True
 )
 
@@ -37,7 +43,8 @@ blog_writer=Agent(
         "discoveries to light in an accessible manner."
     ),
     tools=[yt_tool],
-    allow_delegation=False
+    allow_delegation=False,
+    llm=llm
 
 
 )
